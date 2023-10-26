@@ -92,6 +92,7 @@
           }"
           :tree-slots="pickSubCompSlots($slots, 'tree')"
           @change="onSelectChange"
+          :panel-visible="panelVisible"
         />
         <div
           v-if="$slots.footer && (!isEmpty || showFooterOnEmpty)"
