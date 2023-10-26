@@ -163,6 +163,9 @@ export default defineComponent({
     wordSlice: {
       type: Function as PropType<(value: string, maxLength: number) => string>,
     },
+    trim: {
+      type: Boolean,
+    },
   },
   emits: {
     'update:modelValue': (value: string) => true,
@@ -317,7 +320,15 @@ export default defineComponent({
       focused.value = false;
       emit('blur', ev);
       eventHandlers.value?.onBlur?.(ev);
-      emitChange(computedValue.value, ev);
+      let currentValue = computedValue.value;
+      if (props.trim) {
+        const trimValue = currentValue.trim();
+        if (currentValue !== trimValue) {
+          currentValue = trimValue;
+          updateValue(currentValue);
+        }
+      }
+      emitChange(currentValue, ev);
     };
 
     const handleComposition = (e: CompositionEvent) => {

@@ -117,6 +117,9 @@ export default defineComponent({
     inputAttrs: {
       type: Object,
     },
+    trim: {
+      type: Boolean,
+    },
     // private
     type: {
       type: String as PropType<'text' | 'password'>,
@@ -297,7 +300,15 @@ export default defineComponent({
 
     const handleBlur = (ev: FocusEvent) => {
       focused.value = false;
-      emitChange(computedValue.value, ev);
+      let currentValue = computedValue.value;
+      if (props.trim) {
+        const trimValue = currentValue.trim();
+        if (currentValue !== trimValue) {
+          currentValue = trimValue;
+          updateValue(currentValue);
+        }
+      }
+      emitChange(currentValue, ev);
       emit('blur', ev);
       eventHandlers.value?.onBlur?.(ev);
     };
