@@ -10,7 +10,7 @@
         "
         v-bind="$attrs"
       >
-        <transition name="fade-drawer" appear>
+        <transition name="fade-drawer" :appear="appearTransition">
           <div
             v-if="mask"
             v-show="computedVisible"
@@ -20,7 +20,7 @@
         </transition>
         <transition
           :name="`slide-${placement}-drawer`"
-          appear
+          :appear="appearTransition"
           @after-enter="handleOpen"
           @after-leave="handleClose"
         >
@@ -298,6 +298,14 @@ export default defineComponent({
     hideCancel: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * @zh 是否在初次渲染时执行 Transition 动画
+     * @en Whether to show appear transition
+     */
+    appearTransition: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: {
