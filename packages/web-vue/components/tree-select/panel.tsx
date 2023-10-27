@@ -111,7 +111,9 @@ export default defineComponent({
           const current = selectedKeys.value?.[selectedKeys.value.length - 1];
           if (current != null) {
             // Execute scrollIntoView after the pop-up animation ends, otherwise unnecessary scrolling will occur
-            scrollIntoView(current);
+            setTimeout(() => {
+              scrollIntoView(current);
+            }, 80);
           }
         }
       },
