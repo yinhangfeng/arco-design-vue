@@ -2261,6 +2261,22 @@ export default defineComponent({
     };
 
     const renderPagination = () => {
+      const showPagination =
+        props.pagination !== false &&
+        (flattenData.value.length > 0 || sortedData.value.length > 0);
+
+      const leftConst = slots['pagination-left-const']?.();
+      const rightConst = slots['pagination-right-const']?.();
+
+      if (!showPagination && (leftConst || rightConst)) {
+        return (
+          <div class={paginationCls.value}>
+            {leftConst}
+            {rightConst}
+          </div>
+        );
+      }
+
       const paginationProps = isObject(props.pagination)
         ? omit(props.pagination, [
             'current',
@@ -2272,6 +2288,7 @@ export default defineComponent({
 
       return (
         <div class={paginationCls.value}>
+          {leftConst}
           {slots['pagination-left']?.()}
           <Pagination
             total={validData.value.length}
@@ -2288,6 +2305,7 @@ export default defineComponent({
             {...paginationProps}
           />
           {slots['pagination-right']?.()}
+          {rightConst}
         </div>
       );
     };
@@ -2309,15 +2327,9 @@ export default defineComponent({
         <div class={cls.value} style={style.value}>
           {children.value}
           <Spin {...spinProps.value}>
-            {props.pagination !== false &&
-              (flattenData.value.length > 0 || sortedData.value.length > 0) &&
-              isPaginationTop.value &&
-              renderPagination()}
+            {isPaginationTop.value && renderPagination()}
             {renderTable()}
-            {props.pagination !== false &&
-              (flattenData.value.length > 0 || sortedData.value.length > 0) &&
-              !isPaginationTop.value &&
-              renderPagination()}
+            {!isPaginationTop.value && renderPagination()}
           </Spin>
         </div>
       );
@@ -2333,6 +2345,12 @@ export default defineComponent({
       selfClearFilters: clearFilters,
       selfResetSorters: resetSorters,
       selfClearSorters: clearSorters,
+      get selectedRowKeys() {
+        return selectedRowKeys.value;
+      },
+      get currentSelectedRowKeys() {
+        return currentSelectedRowKeys.value;
+      },
     };
   },
   methods: {
