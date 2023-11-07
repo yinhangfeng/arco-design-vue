@@ -2268,13 +2268,16 @@ export default defineComponent({
       const leftConst = slots['pagination-left-const']?.();
       const rightConst = slots['pagination-right-const']?.();
 
-      if (!showPagination && (leftConst || rightConst)) {
-        return (
-          <div class={paginationCls.value}>
-            {leftConst}
-            {rightConst}
-          </div>
-        );
+      if (!showPagination) {
+        if (leftConst || rightConst) {
+          return (
+            <div class={paginationCls.value}>
+              {leftConst}
+              {rightConst}
+            </div>
+          );
+        }
+        return null;
       }
 
       const paginationProps = isObject(props.pagination)
