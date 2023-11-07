@@ -2341,6 +2341,7 @@ export default defineComponent({
       selfExpandAll: expandAll,
       selfSelect: select,
       selfSelectAll: selectAll,
+      selfClearSelected: clearSelected,
       selfResetFilters: resetFilters,
       selfClearFilters: clearFilters,
       selfResetSorters: resetSorters,
@@ -2374,6 +2375,12 @@ export default defineComponent({
      */
     select(rowKey: string | number | (string | number)[], checked?: boolean) {
       return this.selfSelect(rowKey, checked);
+    },
+    /**
+     * @zh 取消所有选中项
+     */
+    clearSelected() {
+      return this.selfClearSelected();
     },
     /**
      * @zh 设置全部展开状态
